@@ -1,0 +1,3 @@
+[submodule "ext/openvdb"]
+	path = ext/openvdb
+	url = https://github.com/rgl-epfl/openvdb.git
