@@ -22,7 +22,7 @@ endif()
 
 add_subdirectory(openvdb)
 set_property(TARGET openvdb_static PROPERTY FOLDER "dependencies")
-set(OPENVDB_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/openvdb/openvdb)
+set(OPENVDB_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/openvdb)
 set(OPENVDB_INCLUDE_DIR ${OPENVDB_INCLUDE_DIR} PARENT_SCOPE)
 set(OPENVDB_LIBRARY openvdb_static PARENT_SCOPE)
 set(OPENVDB_LIBRARY openvdb_static)
