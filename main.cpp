@@ -63,9 +63,9 @@ int main(int argc, char **argv) {
     // Compute the value of the grid at fractional coordinates in index space.
 
     std::vector<float> values;
-    for (int i = 0; i < bbox.x(); ++i) {
+    for (int k = 0; k < bbox.z(); ++k) {
         for (int j = 0; j < bbox.y(); ++j) {
-            for (int k = 0; k < bbox.z(); ++k) {
+            for (int i = 0; i < bbox.x(); ++i) {
                 float value = sampler.isSample(openvdb::Vec3R(i, j, k));
                 values.push_back(value);
             }
