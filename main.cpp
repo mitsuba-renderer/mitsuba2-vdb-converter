@@ -55,17 +55,18 @@ int main(int argc, char **argv) {
     openvdb::FloatGrid::Ptr grid = openvdb::gridPtrCast<openvdb::FloatGrid>(base_grid);
 
 
-    auto bbox = grid->evalActiveVoxelDim();
+    auto bbox_dim = grid->evalActiveVoxelDim();
+    auto bbox = grid->evalActiveVoxelBoundingBox();
 
-    auto ws_min = grid->indexToWorld(openvdb::Vec3R(0,0,0));
-    auto ws_max = grid->indexToWorld(openvdb::Vec3R(bbox.x() - 1,bbox.y() - 1,bbox.z() - 1));
+    auto ws_min = grid->indexToWorld(bbox.min());
+    auto ws_max = grid->indexToWorld(bbox.max() - openvdb::Vec3R(1, 1, 1));
     openvdb::tools::GridSampler<openvdb::FloatGrid, openvdb::tools::BoxSampler> sampler(*grid);
     // Compute the value of the grid at fractional coordinates in index space.
 
     std::vector<float> values;
-    for (int k = 0; k < bbox.z(); ++k) {
-        for (int j = 0; j < bbox.y(); ++j) {
-            for (int i = 0; i < bbox.x(); ++i) {
+    for (int k = bbox.min().z(); k < bbox.max().z(); ++k) {
+        for (int j = bbox.min().y(); j < bbox.max().y(); ++j) {
+            for (int i = bbox.min().x(); i < bbox.max().x(); ++i) {                
                 float value = sampler.isSample(openvdb::Vec3R(i, j, k));
                 values.push_back(value);
             }
@@ -98,9 +99,9 @@ int main(int argc, char **argv) {
         write(output_file, version);
 
         write(output_file, (int32_t) 1); // type
-        write(output_file, (int32_t) bbox.x());
-        write(output_file, (int32_t) bbox.y());
-        write(output_file, (int32_t) bbox.z());
+        write(output_file, (int32_t)bbox_dim.x() - 1);
+        write(output_file, (int32_t)bbox_dim.y() - 1);
+        write(output_file, (int32_t)bbox_dim.z() - 1);
         write(output_file, (int32_t) 1); // #n channels
 
         float xmin = ws_min.x();
