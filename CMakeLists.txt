@@ -7,7 +7,7 @@ if(MSVC)
 endif()
 
 add_subdirectory(ext ext_build)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 include_directories(${OPENVDB_INCLUDE_DIR})
 
